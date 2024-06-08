@@ -13,6 +13,7 @@ java {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
 }
 
@@ -23,4 +24,6 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     implementation 'org.apache.commons:commons-lang3:3.14.0'
+
+    implementation 'ru.mloleg:logging-starter:1.0'
 }

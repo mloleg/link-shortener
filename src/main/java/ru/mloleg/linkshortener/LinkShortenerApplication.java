@@ -4,6 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ru.mloleg.linkshortener.dto.CreateShortLinkRequest;
 import ru.mloleg.linkshortener.service.LinkInfoService;
+import ru.mloleg.loggingstarter.LoggingConfiguration;
 
 import java.time.ZonedDateTime;
 
@@ -23,5 +24,7 @@ public class LinkShortenerApplication {
 
         System.out.println(linkService.getByShortLink(
                 linkService.createLinkInfo(shortLinkRequest).getShortLink()));
+
+        LoggingConfiguration.testLog("LinkShortenerApplication");
     }
 }
