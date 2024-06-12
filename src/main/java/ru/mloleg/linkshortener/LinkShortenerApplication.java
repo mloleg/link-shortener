@@ -1,20 +1,31 @@
 package ru.mloleg.linkshortener;
 
+import jakarta.annotation.PostConstruct;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import ru.mloleg.linkshortener.dto.CreateShortLinkRequest;
 import ru.mloleg.linkshortener.service.LinkInfoService;
-import ru.mloleg.loggingstarter.LoggingConfiguration;
 
 import java.time.ZonedDateTime;
 
 @SpringBootApplication
 public class LinkShortenerApplication {
-    public static void main(String[] args) {
-        SpringApplication.run(LinkShortenerApplication.class, args);
+    @Qualifier("linkInfoService")
+    private final LinkInfoService linkInfoService;
 
-        LinkInfoService linkService = new LinkInfoService();
+    @Qualifier("linkInfoServiceProxy")
+    private final LinkInfoService linkInfoServiceProxy;
 
+    @Autowired
+    public LinkShortenerApplication(LinkInfoService linkInfoService, LinkInfoService linkInfoServiceProxy) {
+        this.linkInfoService = linkInfoService;
+        this.linkInfoServiceProxy = linkInfoServiceProxy;
+    }
+
+    @PostConstruct
+    public void test() {
         CreateShortLinkRequest shortLinkRequest =
                 new CreateShortLinkRequest(
                         "www.google.com",
@@ -22,9 +33,14 @@ public class LinkShortenerApplication {
                         "Google link",
                         true);
 
-        System.out.println(linkService.getByShortLink(
-                linkService.createLinkInfo(shortLinkRequest).getShortLink()));
+        System.out.println(linkInfoService.getByShortLink(
+                linkInfoService.createLinkInfo(shortLinkRequest).getShortLink()));
 
-        LoggingConfiguration.testLog("LinkShortenerApplication");
+        System.out.println(linkInfoServiceProxy.getByShortLink(
+                linkInfoServiceProxy.createLinkInfo(shortLinkRequest).getShortLink()));
+    }
+
+    public static void main(String[] args) {
+        SpringApplication.run(LinkShortenerApplication.class, args);
     }
 }
