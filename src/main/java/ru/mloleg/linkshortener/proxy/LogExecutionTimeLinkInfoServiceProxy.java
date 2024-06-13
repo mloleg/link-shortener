@@ -21,28 +21,28 @@ public class LogExecutionTimeLinkInfoServiceProxy implements LinkInfoService {
     @Override
     public LinkInfo createLinkInfo(CreateShortLinkRequest request) {
         StopWatch stopWatch = new StopWatch();
-
-        log.info("Starting to measure performance of method 'createLinkInfo'...");
         stopWatch.start();
-        LinkInfo linkInfo = linkInfoService.createLinkInfo(request);
-        stopWatch.stop();
-        log.info("Method 'createLinkInfo' performance: %dns"
-                .formatted(stopWatch.getTotalTimeNanos()));
 
-        return linkInfo;
+        try {
+            return linkInfoService.createLinkInfo(request);
+        } finally {
+            stopWatch.stop();
+            log.info("Method 'createLinkInfo' performance: %dns"
+                    .formatted(stopWatch.getTotalTimeNanos()));
+        }
     }
 
     @Override
     public LinkInfo getByShortLink(String shortLink) {
         StopWatch stopWatch = new StopWatch();
-
-        log.info("Starting to measure performance of method 'getByShortLink'...");
         stopWatch.start();
-        LinkInfo linkInfo = linkInfoService.getByShortLink(shortLink);
-        stopWatch.stop();
-        log.info("Method 'GetByShortLink' performance: %dns"
-                .formatted(stopWatch.getTotalTimeNanos()));
 
-        return linkInfo;
+        try {
+            return linkInfoService.getByShortLink(shortLink);
+        } finally {
+            stopWatch.stop();
+            log.info("Method 'GetByShortLink' performance: %dns"
+                    .formatted(stopWatch.getTotalTimeNanos()));
+        }
     }
 }

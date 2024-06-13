@@ -12,14 +12,13 @@ import java.time.ZonedDateTime;
 
 @SpringBootApplication
 public class LinkShortenerApplication {
-    @Qualifier("linkInfoService")
     private final LinkInfoService linkInfoService;
-
-    @Qualifier("linkInfoServiceProxy")
     private final LinkInfoService linkInfoServiceProxy;
 
     @Autowired
-    public LinkShortenerApplication(LinkInfoService linkInfoService, LinkInfoService linkInfoServiceProxy) {
+    public LinkShortenerApplication(
+            @Qualifier("linkInfoService") LinkInfoService linkInfoService,
+            @Qualifier("linkInfoServiceProxy") LinkInfoService linkInfoServiceProxy) {
         this.linkInfoService = linkInfoService;
         this.linkInfoServiceProxy = linkInfoServiceProxy;
     }
