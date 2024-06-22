@@ -61,7 +61,11 @@ public class LogExecutionTimeBeanPostProcessor implements BeanPostProcessor {
                 }
             }
 
-            return method.invoke(bean, args);
+            try {
+                return method.invoke(bean, args);
+            } catch (Throwable e) {
+                throw e.getCause();
+            }
         });
     }
 
