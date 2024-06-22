@@ -2,39 +2,51 @@ package ru.mloleg.linkshortener.service.impl;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import ru.mloleg.linkshortener.beanpostprocessor.LogExecutionTime;
 import ru.mloleg.linkshortener.dto.CreateShortLinkRequest;
+import ru.mloleg.linkshortener.dto.CreateShortLinkResponse;
 import ru.mloleg.linkshortener.exception.NotFoundException;
 import ru.mloleg.linkshortener.model.LinkInfo;
+import ru.mloleg.linkshortener.property.LinkShortenerProperty;
 import ru.mloleg.linkshortener.repository.LinkInfoRepository;
 import ru.mloleg.linkshortener.service.LinkInfoService;
 
 
-@Service("linkInfoService")
+@Service
 public class LinkInfoServiceImpl implements LinkInfoService {
     private final LinkInfoRepository linkInfoRepository;
-
-    @Value("${link-shortener.short-link-length}")
-    private int shortLinkLength;
+    private final LinkShortenerProperty linkShortenerProperty;
 
     @Autowired
-    public LinkInfoServiceImpl(LinkInfoRepository linkInfoRepository) {
+    public LinkInfoServiceImpl(LinkInfoRepository linkInfoRepository, LinkShortenerProperty linkShortenerProperty) {
         this.linkInfoRepository = linkInfoRepository;
+        this.linkShortenerProperty = linkShortenerProperty;
     }
 
-    public LinkInfo createLinkInfo(CreateShortLinkRequest request) {
+    @LogExecutionTime
+    public CreateShortLinkResponse createLinkInfo(CreateShortLinkRequest request) {
         LinkInfo linkInfo = new LinkInfo();
 
-        linkInfo.setLink(request.getLink());
-        linkInfo.setEndTime(request.getEndTime());
-        linkInfo.setDescription(request.getDescription());
-        linkInfo.setActive(request.getActive());
-        linkInfo.setShortLink(RandomStringUtils.randomAlphanumeric(shortLinkLength));
+        linkInfo.setLink(request.link());
+        linkInfo.setEndTime(request.endTime());
+        linkInfo.setDescription(request.description());
+        linkInfo.setActive(request.active());
+        linkInfo.setShortLink(RandomStringUtils.randomAlphanumeric(linkShortenerProperty.shortLinkLength()));
 
-        return linkInfoRepository.save(linkInfo);
+        linkInfoRepository.save(linkInfo);
+
+        return CreateShortLinkResponse.builder()
+                .id(linkInfo.getId())
+                .link(request.link())
+                .endTime(request.endTime())
+                .description(request.description())
+                .active(request.active())
+                .shortLink(linkInfo.getShortLink())
+                .build();
     }
 
+    @LogExecutionTime
     public LinkInfo getByShortLink(String shortLink) {
         return linkInfoRepository.findByShortLink(shortLink)
                 .orElseThrow(() -> new NotFoundException(

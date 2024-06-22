@@ -1,19 +1,13 @@
 package ru.mloleg.linkshortener.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.ZonedDateTime;
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-public class CreateShortLinkRequest {
-    private String link;
-    private ZonedDateTime endTime;
-    private String description;
-    private Boolean active;
+@Builder
+public record CreateShortLinkRequest(String link,
+                                    ZonedDateTime endTime,
+                                    String description,
+                                    Boolean active) {
+
 }

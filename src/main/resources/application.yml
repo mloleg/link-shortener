@@ -1,2 +1,10 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    bane: link-shortener
+
 link-shortener:
+  system-id: ${spring.application.name}
   short-link-length: 8
+  enable-log-exec-time: false
