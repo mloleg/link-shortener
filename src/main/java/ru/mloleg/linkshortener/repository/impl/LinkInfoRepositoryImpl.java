@@ -4,9 +4,7 @@ import org.springframework.stereotype.Repository;
 import ru.mloleg.linkshortener.model.LinkInfo;
 import ru.mloleg.linkshortener.repository.LinkInfoRepository;
 
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Repository
@@ -26,5 +24,17 @@ public class LinkInfoRepositoryImpl implements LinkInfoRepository {
         data.put(linkInfo.getShortLink(), linkInfo);
 
         return linkInfo;
+    }
+
+    @Override
+    public List<LinkInfo> findAllShortLinks() {
+        return new ArrayList<>(data.values());
+    }
+
+    @Override
+    public Optional<LinkInfo> deleteById(UUID id) {
+        Optional<LinkInfo> linkToDelete = data.values().stream().filter(o -> o.getId().equals(id)).findAny();
+
+        return linkToDelete.map(linkInfo -> data.remove(linkInfo.getShortLink()));
     }
 }
