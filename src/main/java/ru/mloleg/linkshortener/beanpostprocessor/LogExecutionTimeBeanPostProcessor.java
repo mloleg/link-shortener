@@ -21,12 +21,15 @@ public class LogExecutionTimeBeanPostProcessor implements BeanPostProcessor {
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-        Method[] methods = bean.getClass().getMethods();
+        Method[] methods = bean.getClass()
+                               .getMethods();
 
         for (Method method : methods) {
             if (method.isAnnotationPresent(LogExecutionTime.class)) {
                 acceptableBeans.putIfAbsent(beanName, new ClassMethods(bean.getClass(), new ArrayList<>()));
-                acceptableBeans.get(beanName).methods().add(method);
+                acceptableBeans.get(beanName)
+                               .methods()
+                               .add(method);
             }
         }
 
@@ -46,7 +49,8 @@ public class LogExecutionTimeBeanPostProcessor implements BeanPostProcessor {
 
 
         return Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), (proxy, method, args) -> {
-            boolean isAcceptable = annotatedMethods.stream().anyMatch(m -> methodEquals(m, method));
+            boolean isAcceptable = annotatedMethods.stream()
+                                                   .anyMatch(m -> methodEquals(m, method));
 
             if (isAcceptable) {
                 StopWatch stopWatch = new StopWatch();
@@ -70,7 +74,8 @@ public class LogExecutionTimeBeanPostProcessor implements BeanPostProcessor {
     }
 
     private boolean methodEquals(Method method1, Method method2) {
-        if ((method1.getName().equals(method2.getName()))) {
+        if ((method1.getName()
+                    .equals(method2.getName()))) {
             return equalParamTypes(method1.getParameterTypes(), method2.getParameterTypes());
         }
         return false;

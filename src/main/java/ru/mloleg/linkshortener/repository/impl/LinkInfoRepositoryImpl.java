@@ -33,7 +33,11 @@ public class LinkInfoRepositoryImpl implements LinkInfoRepository {
 
     @Override
     public Optional<LinkInfo> deleteById(UUID id) {
-        Optional<LinkInfo> linkToDelete = data.values().stream().filter(o -> o.getId().equals(id)).findAny();
+        Optional<LinkInfo> linkToDelete = data.values()
+                                              .stream()
+                                              .filter(o -> o.getId()
+                                                            .equals(id))
+                                              .findAny();
 
         return linkToDelete.map(linkInfo -> data.remove(linkInfo.getShortLink()));
     }

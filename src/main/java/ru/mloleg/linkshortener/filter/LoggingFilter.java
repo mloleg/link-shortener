@@ -29,7 +29,7 @@ public class LoggingFilter extends HttpFilter {
 
             log.info("Response: {} {} {}", request.getMethod(), request.getRequestURI(), responseBody);
         } finally {
-          wrapper.copyBodyToResponse();
+            wrapper.copyBodyToResponse();
         }
     }
 }

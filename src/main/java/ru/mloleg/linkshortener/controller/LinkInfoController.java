@@ -28,8 +28,8 @@ public class LinkInfoController {
         CreateShortLinkResponse shortLinkResponse = linkInfoService.createLinkInfo(request.body());
 
         return CommonResponse.<CreateShortLinkResponse>builder()
-                .body(shortLinkResponse)
-                .build();
+                             .body(shortLinkResponse)
+                             .build();
     }
 
     @GetMapping
@@ -37,8 +37,8 @@ public class LinkInfoController {
         log.info("Request for all short links");
 
         return CommonResponse.<List<CreateShortLinkResponse>>builder()
-                .body(linkInfoService.getAllShortLinks())
-                .build();
+                             .body(linkInfoService.getAllShortLinks())
+                             .build();
     }
 
     @DeleteMapping
@@ -46,7 +46,7 @@ public class LinkInfoController {
         log.info("Request for shortLink deletion by UUID: %s".formatted(id));
 
         return CommonResponse.<CreateShortLinkResponse>builder()
-                .body(linkInfoService.deleteById(id.body()))
-                .build();
+                             .body(linkInfoService.deleteById(id.body()))
+                             .build();
     }
 }
