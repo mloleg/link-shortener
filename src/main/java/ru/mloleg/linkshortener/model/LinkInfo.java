@@ -1,5 +1,9 @@
 package ru.mloleg.linkshortener.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.*;
 
 import java.time.ZonedDateTime;
@@ -8,9 +12,13 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class LinkInfo {
+public class LinkInfo extends AuditableEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String link;
     private String shortLink;

@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: "01.create_link_info.yml"
+      author: "mloleg"
+      changes:
+        - createTable:
+            ifNotExists: true
+            tableName: link_info
+            remarks: "Short links information"
+            columns:
+              - column:
+                  name: id
+                  type: UUID
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: link
+                  type: varchar
+                  remarks: "Long link"
+              - column:
+                  name: end_time
+                  type: timestamptz
+                  remarks: "Short link end timestamp"
+              - column:
+                  name: description
+                  type: varchar
+                  remarks: "Short link description"
+              - column:
+                  name: active
+                  type: bool
+                  remarks: "Short link active flag"
+              - column:
+                  name: short_link
+                  type: varchar
+                  remarks: "Short link"
+                  constraints:
+                    unique: true
+              - column:
+                  name: opening_count
+                  type: bigint
+                  remarks: "Short link opening count"
+              - column:
+                  name: create_time
+                  type: timestamptz
+                  remarks: "Short link creation timestamp"
+              - column:
+                  name: update_time
+                  type: timestamptz
+                  remarks: "Short link update timestamp"
+
+
+

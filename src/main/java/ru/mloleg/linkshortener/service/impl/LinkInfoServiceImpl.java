@@ -5,7 +5,9 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Service;
 import ru.mloleg.linkshortener.beanpostprocessor.LogExecutionTime;
 import ru.mloleg.linkshortener.dto.CreateShortLinkRequest;
-import ru.mloleg.linkshortener.dto.CreateShortLinkResponse;
+import ru.mloleg.linkshortener.dto.FilterLinkInfoRequest;
+import ru.mloleg.linkshortener.dto.LinkInfoResponse;
+import ru.mloleg.linkshortener.dto.UpdateShortLinkRequest;
 import ru.mloleg.linkshortener.exception.NotFoundException;
 import ru.mloleg.linkshortener.mapper.LinkInfoMapper;
 import ru.mloleg.linkshortener.model.LinkInfo;
@@ -25,7 +27,7 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     private final LinkInfoMapper linkInfoMapper;
 
     @LogExecutionTime
-    public CreateShortLinkResponse createLinkInfo(CreateShortLinkRequest request) {
+    public LinkInfoResponse createLinkInfo(CreateShortLinkRequest request) {
         LinkInfo linkInfo = linkInfoMapper.toLinkInfo(request);
         linkInfo.setShortLink(RandomStringUtils.randomAlphanumeric(linkShortenerProperty.getShortLinkLength()));
         linkInfo.setOpeningCount(0L);
@@ -37,24 +39,59 @@ public class LinkInfoServiceImpl implements LinkInfoService {
 
     @LogExecutionTime
     public LinkInfo getByShortLink(String shortLink) {
-        return linkInfoRepository.findByShortLink(shortLink)
-                                 .orElseThrow(() -> new NotFoundException(
-                                         "LinkInfo with shortLink {%s} was not found".formatted(shortLink)));
+        LinkInfo linkInfo = linkInfoRepository.findByShortLinkAndActiveTrue(shortLink)
+                                              .orElseThrow(() -> new NotFoundException(
+                                                      "LinkInfo with shortLink {%s} was not found".formatted(shortLink)));
+
+        linkInfoRepository.incrementOpeningCountByShortLink(shortLink);
+
+        return linkInfo;
     }
 
     @Override
-    public List<CreateShortLinkResponse> getAllShortLinks() {
-        return linkInfoRepository.findAllShortLinks()
+    public List<LinkInfoResponse> getAllShortLinks() {
+        return linkInfoRepository.findAll()
                                  .stream()
                                  .map(linkInfoMapper::toResponse)
                                  .toList();
     }
 
-
-    public CreateShortLinkResponse deleteById(UUID id) {
-        return linkInfoMapper.toResponse(linkInfoRepository
-                .deleteById(id)
+    @Override
+    public LinkInfoResponse deleteById(UUID id) {
+        LinkInfoResponse deletedLink = linkInfoMapper.toResponse(linkInfoRepository
+                .findById(id)
                 .orElseThrow(() -> new NotFoundException(
                         "LinkInfo with UUID {%s} was not found".formatted(id))));
+
+        linkInfoRepository.deleteById(id);
+
+        return deletedLink;
+    }
+
+    @Override
+    public List<LinkInfoResponse> findByFilter(FilterLinkInfoRequest filterRequest) {
+        return linkInfoRepository.findByFilter(
+                                         filterRequest.linkPart(),
+                                         filterRequest.endTimeFrom(),
+                                         filterRequest.endTimeTo(),
+                                         filterRequest.descriptionPart(),
+                                         filterRequest.active())
+                                 .stream()
+                                 .map(linkInfoMapper::toResponse)
+                                 .toList();
+    }
+
+    @Override
+    public LinkInfoResponse updateById(UpdateShortLinkRequest request) {
+        LinkInfo toUpdate = linkInfoMapper.toLinkInfo(request);
+
+        toUpdate.setShortLink(
+                linkInfoRepository
+                        .findById(toUpdate.getId())
+                        .orElseThrow(() -> new NotFoundException(
+                                "LinkInfo with UUID {%s} was not found".formatted(toUpdate.getId())))
+                        .getShortLink());
+
+        return linkInfoMapper.toResponse(linkInfoRepository.save(toUpdate));
     }
 }
