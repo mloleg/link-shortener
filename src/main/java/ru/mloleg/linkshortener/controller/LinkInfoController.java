@@ -41,7 +41,7 @@ public class LinkInfoController {
     @PostMapping("/filter")
     public CommonResponse<List<LinkInfoResponse>> filter(@RequestBody @Valid
                                                          CommonRequest<FilterLinkInfoRequest> request) {
-//        log.info("Request for all short links");
+        log.info("Request for all short links by filter: " + request.body());
 
         List<LinkInfoResponse> linkInfoResponses = linkInfoService.findByFilter(request.body());
 
@@ -53,7 +53,7 @@ public class LinkInfoController {
     @PostMapping("/update")
     public CommonResponse<LinkInfoResponse> update(@RequestBody @Valid
                                                    CommonRequest<UpdateShortLinkRequest> request) {
-//        log.info("Request for all short links");
+        log.info("Request for shortLink update by UUID: %s".formatted(request.body().id()));
 
         LinkInfoResponse linkInfoResponses = linkInfoService.updateById(request.body());
 
