@@ -4,7 +4,7 @@ import org.mapstruct.Mapper;
 import org.springframework.stereotype.Component;
 import ru.mloleg.linkshortener.dto.CreateShortLinkRequest;
 import ru.mloleg.linkshortener.dto.LinkInfoResponse;
-import ru.mloleg.linkshortener.dto.UpdateShortLinkRequest;
+import ru.mloleg.linkshortener.dto.UpdateLinkInfoRequest;
 import ru.mloleg.linkshortener.model.LinkInfo;
 
 @Component
@@ -12,8 +12,6 @@ import ru.mloleg.linkshortener.model.LinkInfo;
 public interface LinkInfoMapper {
 
     LinkInfo toLinkInfo(CreateShortLinkRequest request);
-
-    LinkInfo toLinkInfo(UpdateShortLinkRequest request);
 
     LinkInfoResponse toResponse(LinkInfo linkInfo);
 }

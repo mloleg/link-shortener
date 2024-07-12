@@ -3,7 +3,6 @@ package ru.mloleg.linkshortener.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.mloleg.linkshortener.dto.*;
 import ru.mloleg.linkshortener.dto.common.CommonRequest;
@@ -19,20 +18,9 @@ import java.util.List;
 public class LinkInfoController {
     private final LinkInfoService linkInfoService;
 
-    @GetMapping
-    public CommonResponse<List<LinkInfoResponse>> getAllShortLinks() {
-        log.info("Request for all short links");
-
-        return CommonResponse.<List<LinkInfoResponse>>builder()
-                             .body(linkInfoService.getAllShortLinks())
-                             .build();
-    }
-
     @PostMapping
     public CommonResponse<LinkInfoResponse> postCreateShortLink(@RequestBody @Valid
                                                                 CommonRequest<CreateShortLinkRequest> request) {
-        log.info("Request for shortLink creation: %s".formatted(request.body()));
-
         return CommonResponse.<LinkInfoResponse>builder()
                              .body(linkInfoService.createLinkInfo(request.body()))
                              .build();
@@ -41,8 +29,6 @@ public class LinkInfoController {
     @PostMapping("/filter")
     public CommonResponse<List<LinkInfoResponse>> filter(@RequestBody @Valid
                                                          CommonRequest<FilterLinkInfoRequest> request) {
-        log.info("Request for all short links by filter: " + request.body());
-
         List<LinkInfoResponse> linkInfoResponses = linkInfoService.findByFilter(request.body());
 
         return CommonResponse.<List<LinkInfoResponse>>builder()
@@ -50,11 +36,9 @@ public class LinkInfoController {
                              .build();
     }
 
-    @PostMapping("/update")
+    @PatchMapping
     public CommonResponse<LinkInfoResponse> update(@RequestBody @Valid
-                                                   CommonRequest<UpdateShortLinkRequest> request) {
-        log.info("Request for shortLink update by UUID: %s".formatted(request.body().id()));
-
+                                                   CommonRequest<UpdateLinkInfoRequest> request) {
         LinkInfoResponse linkInfoResponses = linkInfoService.updateById(request.body());
 
         return CommonResponse.<LinkInfoResponse>builder()
@@ -63,13 +47,11 @@ public class LinkInfoController {
     }
 
     @DeleteMapping
-    public CommonResponse<LinkInfoResponse> deleteById(@RequestBody @Validated
+    public CommonResponse<LinkInfoResponse> deleteById(@RequestBody @Valid
                                                        CommonRequest<IdRequest> id) {
-        log.info("Request for shortLink deletion by UUID: %s".formatted(id));
-
         return CommonResponse.<LinkInfoResponse>builder()
                              .body(linkInfoService.deleteById(id.body()
-                                                                .getId()))
+                                                                .id()))
                              .build();
     }
 }

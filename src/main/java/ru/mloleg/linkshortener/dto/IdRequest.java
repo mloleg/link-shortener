@@ -5,13 +5,8 @@ import lombok.*;
 
 import java.util.UUID;
 
-@Getter
-@Setter
-@ToString
-@NoArgsConstructor
-@AllArgsConstructor
-public class IdRequest {
-
-    @NotNull(message = "UUID should not be empty")
-    private UUID id;
+@Builder
+public record IdRequest(
+        @NotNull(message = "UUID should not be empty")
+        UUID id) {
 }

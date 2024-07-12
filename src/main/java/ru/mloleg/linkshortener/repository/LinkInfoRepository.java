@@ -1,5 +1,6 @@
 package ru.mloleg.linkshortener.repository;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,9 +26,10 @@ public interface LinkInfoRepository extends JpaRepository<LinkInfo, UUID> {
                                 ZonedDateTime endTimeFrom,
                                 ZonedDateTime endTimeTo,
                                 String descriptionPart,
-                                Boolean active);
+                                Boolean active,
+                                Pageable pageable);
 
-    Optional<LinkInfo> findByShortLinkAndActiveTrue(String shortLink);
+    Optional<LinkInfo> findByShortLinkAndActiveTrueAndEndTimeIsAfter(String shortLink, ZonedDateTime endTime);
 
     @Query("""
             UPDATE LinkInfo li

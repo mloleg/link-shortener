@@ -3,7 +3,7 @@ package ru.mloleg.linkshortener.service;
 import ru.mloleg.linkshortener.dto.CreateShortLinkRequest;
 import ru.mloleg.linkshortener.dto.FilterLinkInfoRequest;
 import ru.mloleg.linkshortener.dto.LinkInfoResponse;
-import ru.mloleg.linkshortener.dto.UpdateShortLinkRequest;
+import ru.mloleg.linkshortener.dto.UpdateLinkInfoRequest;
 import ru.mloleg.linkshortener.model.LinkInfo;
 
 import java.util.List;
@@ -21,5 +21,5 @@ public interface LinkInfoService {
 
     List<LinkInfoResponse> findByFilter(FilterLinkInfoRequest filterLinkInfoRequest);
 
-    LinkInfoResponse updateById(UpdateShortLinkRequest request);
+    LinkInfoResponse updateById(UpdateLinkInfoRequest request);
 }
