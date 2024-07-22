@@ -43,9 +43,10 @@ public class LinkInfoServiceImpl implements LinkInfoService {
 
     @LogExecutionTime
     public LinkInfo getByShortLink(String shortLink) {
-        LinkInfo linkInfo = linkInfoRepository.findByShortLinkAndActiveTrueAndEndTimeIsAfter(shortLink, ZonedDateTime.now())
-                                              .orElseThrow(() -> new NotFoundPageException(
-                                                      "LinkInfo with shortLink {%s} was not found".formatted(shortLink)));
+        LinkInfo linkInfo = linkInfoRepository
+                .findByShortLinkAndActiveTrueAndEndTimeIsAfter(shortLink, ZonedDateTime.now())
+                .orElseThrow(() -> new NotFoundPageException(
+                        "LinkInfo with shortLink {%s} was not found".formatted(shortLink)));
 
         linkInfoRepository.incrementOpeningCountByShortLink(shortLink);
 

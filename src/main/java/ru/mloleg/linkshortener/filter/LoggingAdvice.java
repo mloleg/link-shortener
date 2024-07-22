@@ -29,7 +29,9 @@ public class LoggingAdvice extends RequestBodyAdviceAdapter {
     }
 
     @Override
-    public boolean supports(MethodParameter methodParameter, Type targetType, Class<? extends HttpMessageConverter<?>> converterType) {
+    public boolean supports(MethodParameter methodParameter,
+                            Type targetType,
+                            Class<? extends HttpMessageConverter<?>> converterType) {
         return true;
     }
 }

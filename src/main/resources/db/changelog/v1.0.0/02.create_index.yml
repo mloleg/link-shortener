@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: "02.create_index.yml"
+      author: "mloleg"
+      runInTransaction: false
+      changes:
+        - sql:
+            dbms: "postgresql"
+            sql: CREATE EXTENSION IF NOT EXISTS pg_trgm
+        - sql:
+            dbms: "postgresql"
+            sql: CREATE EXTENSION IF NOT EXISTS btree_gin
+        - sql:
+            dbms: "postgresql"
+            sql: CREATE INDEX CONCURRENTLY link_info_link_idx ON link_info USING gin (link)
+        - sql:
+            dbms: "postgresql"
+            sql: CREATE INDEX CONCURRENTLY link_info_description_idx ON link_info USING gin (description)
+        - createIndex:
+            clustered: true
+            columns:
+              - column:
+                  descending: false
+                  name: end_time
+            indexName: link_info_end_time_idx
+            schemaName: link_shortener
+            tableName: link_info
+
+

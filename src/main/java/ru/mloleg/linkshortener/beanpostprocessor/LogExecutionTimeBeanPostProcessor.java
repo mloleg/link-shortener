@@ -50,7 +50,6 @@ public class LogExecutionTimeBeanPostProcessor implements BeanPostProcessor {
         Class<?> clazz = classMethods.clazz();
         List<Method> annotatedMethods = classMethods.methods();
 
-
         return Proxy.newProxyInstance(clazz.getClassLoader(), clazz.getInterfaces(), (proxy, method, args) -> {
             boolean isAcceptable = annotatedMethods.stream()
                                                    .anyMatch(m -> methodEquals(m, method));

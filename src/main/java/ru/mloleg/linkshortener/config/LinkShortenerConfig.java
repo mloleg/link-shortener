@@ -15,6 +15,6 @@ public class LinkShortenerConfig {
     public String notFoundPage() throws IOException {
         File file = ResourceUtils.getFile("classpath:templates/404.html");
 
-        return Files.readString(file.toPath())
-;    }
+        return Files.readString(file.toPath());
+    }
 }
