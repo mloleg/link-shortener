@@ -9,5 +9,8 @@ databaseChangeLog:
       file: 01.create_link_info.yml
       relativeToChangelogFile: true
   - include:
-      file: 02.create_index.yml
+      file: 02.create_extension.yml
+      relativeToChangelogFile: true
+  - include:
+      file: 03.create_index.yml
       relativeToChangelogFile: true
