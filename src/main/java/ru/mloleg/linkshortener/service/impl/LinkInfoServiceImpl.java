@@ -7,7 +7,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
-import ru.mloleg.linkshortener.beanpostprocessor.LogExecutionTime;
 import ru.mloleg.linkshortener.dto.*;
 import ru.mloleg.linkshortener.exception.NotFoundException;
 import ru.mloleg.linkshortener.exception.NotFoundPageException;
@@ -16,6 +15,7 @@ import ru.mloleg.linkshortener.model.LinkInfo;
 import ru.mloleg.linkshortener.property.LinkShortenerProperty;
 import ru.mloleg.linkshortener.repository.LinkInfoRepository;
 import ru.mloleg.linkshortener.service.LinkInfoService;
+import ru.mloleg.loggingstarter.aspect.LogExecutionTime;
 
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -74,6 +74,7 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     }
 
     @Override
+    @LogExecutionTime
     public List<LinkInfoResponse> findByFilter(FilterLinkInfoRequest filterRequest) {
         Pageable pageable = createPageable(filterRequest);
 
