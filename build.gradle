@@ -38,5 +38,5 @@ dependencies {
 
     implementation 'org.apache.commons:commons-lang3:3.14.0'
 
-    implementation 'ru.mloleg:logging-starter:1.3'
+    implementation 'ru.mloleg:logging-starter:1.4'
 }

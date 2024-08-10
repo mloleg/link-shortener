@@ -2,7 +2,7 @@ spring:
   profiles:
     active: dev
   application:
-    bane: link-shortener
+    name: link-shortener
   datasource:
     url: jdbc:postgresql://localhost:5433/link-shortener
     username: postgres
@@ -24,3 +24,8 @@ link-shortener:
   system-id: ${spring.application.name}
   short-link-length: 8
   enable-log-exec-time: false
+  scheduled-time: "00 00 23 * * *"
+
+logs:
+  loggingFilter: true
+  loggingAdvice: true

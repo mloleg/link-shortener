@@ -39,4 +39,7 @@ public interface LinkInfoRepository extends JpaRepository<LinkInfo, UUID> {
     @Modifying
     @Transactional
     void incrementOpeningCountByShortLink(String shortLink);
+
+    @Transactional
+    void deleteByActiveFalseAndUpdateTimeIsBefore(ZonedDateTime beforeTime);
 }

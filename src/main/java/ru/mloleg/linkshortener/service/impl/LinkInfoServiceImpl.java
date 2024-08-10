@@ -131,4 +131,10 @@ public class LinkInfoServiceImpl implements LinkInfoService {
 
         return linkInfoMapper.toResponse(toUpdate);
     }
+
+    @Override
+    public void deleteInactiveLinks() {
+        linkInfoRepository.deleteByActiveFalseAndUpdateTimeIsBefore(
+                ZonedDateTime.now().minusMonths(1));
+    }
 }

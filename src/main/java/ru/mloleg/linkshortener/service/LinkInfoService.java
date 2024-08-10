@@ -22,4 +22,6 @@ public interface LinkInfoService {
     List<LinkInfoResponse> findByFilter(FilterLinkInfoRequest filterLinkInfoRequest);
 
     LinkInfoResponse updateById(UpdateLinkInfoRequest request);
+
+    void deleteInactiveLinks();
 }

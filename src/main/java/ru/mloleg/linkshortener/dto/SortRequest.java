@@ -13,7 +13,6 @@ public class SortRequest {
 
     @NotEmpty
     private String field;
-
     @Pattern(regexp = "ASC|DESC")
     private String direction = "ASC";
 }
