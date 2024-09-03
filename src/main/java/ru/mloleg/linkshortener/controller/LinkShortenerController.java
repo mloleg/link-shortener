@@ -17,6 +17,7 @@ import ru.mloleg.linkshortener.service.LinkInfoService;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
 public class LinkShortenerController {
+
     private final LinkInfoService linkInfoService;
 
     @GetMapping("/short-link/{shortLink}")
@@ -26,7 +27,7 @@ public class LinkShortenerController {
         LinkInfo linkInfo = linkInfoService.getByShortLink(shortLink);
 
         return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
-                             .header(HttpHeaders.LOCATION, linkInfo.getLink())
-                             .build();
+                .header(HttpHeaders.LOCATION, linkInfo.getLink())
+                .build();
     }
 }

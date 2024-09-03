@@ -1,6 +1,7 @@
 package ru.mloleg.linkshortener.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -21,14 +22,14 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
 
-
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LinkInfoServiceImpl implements LinkInfoService {
+
     private final LinkInfoRepository linkInfoRepository;
     private final LinkInfoMapper linkInfoMapper;
     private final LinkShortenerProperty linkShortenerProperty;
-
 
     @LogExecutionTime
     public LinkInfoResponse createLinkInfo(CreateShortLinkRequest request) {
@@ -56,17 +57,18 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     @Override
     public List<LinkInfoResponse> getAllShortLinks() {
         return linkInfoRepository.findAll()
-                                 .stream()
-                                 .map(linkInfoMapper::toResponse)
-                                 .toList();
+                .stream()
+                .map(linkInfoMapper::toResponse)
+                .toList();
     }
 
     @Override
     public LinkInfoResponse deleteById(UUID id) {
-        LinkInfoResponse deletedLink = linkInfoMapper.toResponse(linkInfoRepository
-                .findById(id)
-                .orElseThrow(() -> new NotFoundException(
-                        "LinkInfo with UUID {%s} was not found".formatted(id))));
+        LinkInfoResponse deletedLink = linkInfoMapper.toResponse(
+                linkInfoRepository
+                        .findById(id)
+                        .orElseThrow(() -> new NotFoundException(
+                                "LinkInfo with UUID {%s} was not found".formatted(id))));
 
         linkInfoRepository.deleteById(id);
 
@@ -79,26 +81,27 @@ public class LinkInfoServiceImpl implements LinkInfoService {
         Pageable pageable = createPageable(filterRequest);
 
         return linkInfoRepository.findByFilter(
-                                         filterRequest.linkPart(),
-                                         filterRequest.endTimeFrom(),
-                                         filterRequest.endTimeTo(),
-                                         filterRequest.descriptionPart(),
-                                         filterRequest.active(),
-                                         pageable)
-                                 .stream()
-                                 .map(linkInfoMapper::toResponse)
-                                 .toList();
+                        filterRequest.linkPart(),
+                        filterRequest.endTimeFrom(),
+                        filterRequest.endTimeTo(),
+                        filterRequest.descriptionPart(),
+                        filterRequest.active(),
+                        pageable)
+                .stream()
+                .map(linkInfoMapper::toResponse)
+                .toList();
     }
 
     private static Pageable createPageable(FilterLinkInfoRequest filterRequest) {
         PageableRequest pageableRequest = filterRequest.pageableRequest();
 
-        List<Sort.Order> sorts = pageableRequest.getSorts()
-                                                .stream()
-                                                .map(o -> new Sort.Order(
-                                                        Sort.Direction.fromString(o.getDirection()),
-                                                        o.getField()))
-                                                .toList();
+        List<Sort.Order> sorts = pageableRequest
+                .getSorts()
+                .stream()
+                .map(o -> new Sort.Order(
+                        Sort.Direction.fromString(o.getDirection()),
+                        o.getField()))
+                .toList();
 
         Sort sort = CollectionUtils.isEmpty(sorts)
                 ? Sort.unsorted()
@@ -110,8 +113,8 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     @Override
     public LinkInfoResponse updateById(UpdateLinkInfoRequest request) {
         LinkInfo toUpdate = linkInfoRepository.findById(request.id())
-                                              .orElseThrow(() -> new NotFoundException(
-                                                      "LinkInfo with UUID {%s} was not found".formatted(request.id())));
+                .orElseThrow(() -> new NotFoundException(
+                        "LinkInfo with UUID {%s} was not found".formatted(request.id())));
 
         if (request.link() != null) {
             toUpdate.setLink(request.link());
@@ -134,7 +137,9 @@ public class LinkInfoServiceImpl implements LinkInfoService {
 
     @Override
     public void deleteInactiveLinks() {
-        linkInfoRepository.deleteByActiveFalseAndUpdateTimeIsBefore(
-                ZonedDateTime.now().minusMonths(1));
+        log.info("Inactive links deleted: " + linkInfoRepository
+                .deleteByActiveFalseAndUpdateTimeIsBefore(
+                        ZonedDateTime.now()
+                                .minusMonths(1)));
     }
 }

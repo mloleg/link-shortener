@@ -14,4 +14,5 @@ public record FilterLinkInfoRequest(
         String descriptionPart,
         Boolean active,
         PageableRequest pageableRequest) {
+
 }

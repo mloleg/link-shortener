@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @ConfigurationProperties(prefix = "link-shortener")
 public final class LinkShortenerProperty {
+
     private String systemId;
     private int shortLinkLength;
     private boolean enableLogExecTime;

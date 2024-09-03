@@ -32,20 +32,20 @@ public class LinkShortenerExceptionHandler {
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
         List<ValidationError> validationErrors = fieldErrors
-            .stream()
-            .map(validationError ->
-                    ValidationError.builder()
-                                   .field(validationError.getField())
-                                   .message(validationError.getDefaultMessage())
-                                   .build())
-            .toList();
+                .stream()
+                .map(validationError ->
+                        ValidationError.builder()
+                                .field(validationError.getField())
+                                .message(validationError.getDefaultMessage())
+                                .build())
+                .toList();
 
         log.error("Response validation error: {}", validationErrors, e);
 
         return CommonResponse.builder()
-                             .errorMessage("Validation error")
-                             .validationErrorList(validationErrors)
-                             .build();
+                .errorMessage("Validation error")
+                .validationErrorList(validationErrors)
+                .build();
     }
 
     @ExceptionHandler(NotFoundPageException.class)
@@ -53,8 +53,8 @@ public class LinkShortenerExceptionHandler {
         log.error(e.getMessage(), e);
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                             .contentType(MediaType.TEXT_HTML)
-                             .body(notFoundPage);
+                .contentType(MediaType.TEXT_HTML)
+                .body(notFoundPage);
     }
 
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -63,7 +63,7 @@ public class LinkShortenerExceptionHandler {
         log.error("An exception occurred: {}", e.getMessage(), e);
 
         return CommonResponse.builder()
-                             .errorMessage("An exception occurred: {}" + e.getMessage())
-                             .build();
+                .errorMessage("An exception occurred: {}" + e.getMessage())
+                .build();
     }
 }

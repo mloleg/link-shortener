@@ -40,6 +40,8 @@ public interface LinkInfoRepository extends JpaRepository<LinkInfo, UUID> {
     @Transactional
     void incrementOpeningCountByShortLink(String shortLink);
 
+    @Modifying
     @Transactional
-    void deleteByActiveFalseAndUpdateTimeIsBefore(ZonedDateTime beforeTime);
+    @Query("DELETE FROM LinkInfo WHERE updateTime < :beforeTime")
+    int deleteByActiveFalseAndUpdateTimeIsBefore(ZonedDateTime beforeTime);
 }

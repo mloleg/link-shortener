@@ -16,10 +16,10 @@ import java.util.concurrent.TimeUnit;
 public class ScheduleConfig {
 
     @Bean(destroyMethod = "shutdown")
-    public ExecutorService simpleExecutor() {
+    public ExecutorService deleteInactiveLinksExecutor() {
         return new ThreadPoolExecutor(1, 1,
                 0L, TimeUnit.MILLISECONDS,
                 new ArrayBlockingQueue<>(1),
-                new ThreadPoolExecutor.AbortPolicy());
+                new ThreadPoolExecutor.DiscardPolicy());
     }
 }

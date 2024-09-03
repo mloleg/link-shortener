@@ -14,4 +14,5 @@ public record LinkInfoResponse(
         Boolean active,
         String shortLink,
         Long openingCount) {
+
 }

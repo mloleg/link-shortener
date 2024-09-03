@@ -16,42 +16,42 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/link-infos")
 public class LinkInfoController {
+
     private final LinkInfoService linkInfoService;
 
     @PostMapping
-    public CommonResponse<LinkInfoResponse> postCreateShortLink(@RequestBody @Valid
-                                                                CommonRequest<CreateShortLinkRequest> request) {
+    public CommonResponse<LinkInfoResponse> postCreateShortLink(
+            @RequestBody @Valid CommonRequest<CreateShortLinkRequest> request) {
         return CommonResponse.<LinkInfoResponse>builder()
-                             .body(linkInfoService.createLinkInfo(request.body()))
-                             .build();
+                .body(linkInfoService.createLinkInfo(request.body()))
+                .build();
     }
 
     @PostMapping("/filter")
-    public CommonResponse<List<LinkInfoResponse>> filter(@RequestBody @Valid
-                                                         CommonRequest<FilterLinkInfoRequest> request) {
+    public CommonResponse<List<LinkInfoResponse>> filter(
+            @RequestBody @Valid CommonRequest<FilterLinkInfoRequest> request) {
         List<LinkInfoResponse> linkInfoResponses = linkInfoService.findByFilter(request.body());
 
         return CommonResponse.<List<LinkInfoResponse>>builder()
-                             .body(linkInfoResponses)
-                             .build();
+                .body(linkInfoResponses)
+                .build();
     }
 
     @PatchMapping
-    public CommonResponse<LinkInfoResponse> update(@RequestBody @Valid
-                                                   CommonRequest<UpdateLinkInfoRequest> request) {
+    public CommonResponse<LinkInfoResponse> update(
+            @RequestBody @Valid CommonRequest<UpdateLinkInfoRequest> request) {
         LinkInfoResponse linkInfoResponses = linkInfoService.updateById(request.body());
 
         return CommonResponse.<LinkInfoResponse>builder()
-                             .body(linkInfoResponses)
-                             .build();
+                .body(linkInfoResponses)
+                .build();
     }
 
     @DeleteMapping
-    public CommonResponse<LinkInfoResponse> deleteById(@RequestBody @Valid
-                                                       CommonRequest<IdRequest> id) {
+    public CommonResponse<LinkInfoResponse> deleteById(
+            @RequestBody @Valid CommonRequest<IdRequest> request) {
         return CommonResponse.<LinkInfoResponse>builder()
-                             .body(linkInfoService.deleteById(id.body()
-                                                                .id()))
-                             .build();
+                .body(linkInfoService.deleteById(request.body().id()))
+                .build();
     }
 }

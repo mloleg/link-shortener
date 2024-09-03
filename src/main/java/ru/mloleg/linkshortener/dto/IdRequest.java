@@ -9,4 +9,5 @@ import java.util.UUID;
 public record IdRequest(
         @NotNull(message = "UUID should not be empty")
         UUID id) {
+
 }
