@@ -1,15 +1,15 @@
 package ru.mloleg.linkshortener.dto;
 
-import lombok.*;
+import lombok.Builder;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
 public record LinkInfoResponse(
         UUID id,
         String link,
-        ZonedDateTime endTime,
+        LocalDateTime endTime,
         String description,
         Boolean active,
         String shortLink,

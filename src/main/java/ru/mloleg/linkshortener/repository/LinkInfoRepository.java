@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mloleg.linkshortener.model.LinkInfo;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -23,13 +23,13 @@ public interface LinkInfoRepository extends JpaRepository<LinkInfo, UUID> {
             AND (:active IS NULL OR li.active = :active)
             """)
     List<LinkInfo> findByFilter(String linkPart,
-                                ZonedDateTime endTimeFrom,
-                                ZonedDateTime endTimeTo,
+                                LocalDateTime endTimeFrom,
+                                LocalDateTime endTimeTo,
                                 String descriptionPart,
                                 Boolean active,
                                 Pageable pageable);
 
-    Optional<LinkInfo> findByShortLinkAndActiveTrueAndEndTimeIsAfter(String shortLink, ZonedDateTime endTime);
+    Optional<LinkInfo> findByShortLinkAndActiveTrueAndEndTimeIsNullOrEndTimeIsAfter(String shortLink, LocalDateTime endTime);
 
     @Query("""
             UPDATE LinkInfo li
@@ -43,5 +43,5 @@ public interface LinkInfoRepository extends JpaRepository<LinkInfo, UUID> {
     @Modifying
     @Transactional
     @Query("DELETE FROM LinkInfo WHERE updateTime < :beforeTime")
-    int deleteByActiveFalseAndUpdateTimeIsBefore(ZonedDateTime beforeTime);
+    int deleteByActiveFalseAndUpdateTimeIsBefore(LocalDateTime beforeTime);
 }

@@ -23,14 +23,14 @@ public class LinkInfoController {
     public CommonResponse<LinkInfoResponse> postCreateShortLink(
             @RequestBody @Valid CommonRequest<CreateShortLinkRequest> request) {
         return CommonResponse.<LinkInfoResponse>builder()
-                .body(linkInfoService.createLinkInfo(request.body()))
+                .body(linkInfoService.createLinkInfo(request.getBody()))
                 .build();
     }
 
     @PostMapping("/filter")
     public CommonResponse<List<LinkInfoResponse>> filter(
             @RequestBody @Valid CommonRequest<FilterLinkInfoRequest> request) {
-        List<LinkInfoResponse> linkInfoResponses = linkInfoService.findByFilter(request.body());
+        List<LinkInfoResponse> linkInfoResponses = linkInfoService.findByFilter(request.getBody());
 
         return CommonResponse.<List<LinkInfoResponse>>builder()
                 .body(linkInfoResponses)
@@ -40,7 +40,7 @@ public class LinkInfoController {
     @PatchMapping
     public CommonResponse<LinkInfoResponse> update(
             @RequestBody @Valid CommonRequest<UpdateLinkInfoRequest> request) {
-        LinkInfoResponse linkInfoResponses = linkInfoService.updateById(request.body());
+        LinkInfoResponse linkInfoResponses = linkInfoService.updateById(request.getBody());
 
         return CommonResponse.<LinkInfoResponse>builder()
                 .body(linkInfoResponses)
@@ -51,7 +51,7 @@ public class LinkInfoController {
     public CommonResponse<LinkInfoResponse> deleteById(
             @RequestBody @Valid CommonRequest<IdRequest> request) {
         return CommonResponse.<LinkInfoResponse>builder()
-                .body(linkInfoService.deleteById(request.body().id()))
+                .body(linkInfoService.deleteById(request.getBody().id()))
                 .build();
     }
 }

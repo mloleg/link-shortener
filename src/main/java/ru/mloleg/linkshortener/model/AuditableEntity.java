@@ -6,24 +6,24 @@ import jakarta.persistence.PreUpdate;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @MappedSuperclass
 public class AuditableEntity {
 
-    private ZonedDateTime createTime;
-    private ZonedDateTime updateTime;
+    private LocalDateTime createTime;
+    private LocalDateTime updateTime;
 
     @PrePersist
     public void prePersist() {
-        this.createTime = ZonedDateTime.now();
-        this.updateTime = ZonedDateTime.now();
+        this.createTime = LocalDateTime.now();
+        this.updateTime = LocalDateTime.now();
     }
 
     @PreUpdate
     public void preUpdate() {
-        this.updateTime = ZonedDateTime.now();
+        this.updateTime = LocalDateTime.now();
     }
 }

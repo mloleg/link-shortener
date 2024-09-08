@@ -1,9 +1,9 @@
 package ru.mloleg.linkshortener.dto;
 
 import jakarta.validation.constraints.*;
-import lombok.*;
+import lombok.Builder;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 @Builder
 public record CreateShortLinkRequest(
@@ -12,7 +12,7 @@ public record CreateShortLinkRequest(
         @Pattern(regexp = "https?://.+\\..+", message = "Link does not match URL pattern")
         String link,
         @Future(message = "Expiration date should be in future")
-        ZonedDateTime endTime,
+        LocalDateTime endTime,
         @NotEmpty(message = "Description should not be empty")
         String description,
         @NotNull(message = "Active flag should not be empty")

@@ -1,0 +1,7 @@
+
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;DATABASE_TO_LOWER=true;INIT=CREATE SCHEMA IF NOT EXISTS link_shortener"
+    username: sa
+    password: sa

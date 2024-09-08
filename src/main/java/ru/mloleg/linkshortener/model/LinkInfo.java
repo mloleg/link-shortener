@@ -4,9 +4,12 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -22,7 +25,7 @@ public class LinkInfo extends AuditableEntity {
     private UUID id;
     private String link;
     private String shortLink;
-    private ZonedDateTime endTime;
+    private LocalDateTime endTime;
     private String description;
     private Boolean active;
     private long openingCount;
