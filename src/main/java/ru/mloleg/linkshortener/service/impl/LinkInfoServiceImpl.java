@@ -18,7 +18,7 @@ import ru.mloleg.linkshortener.repository.LinkInfoRepository;
 import ru.mloleg.linkshortener.service.LinkInfoService;
 import ru.mloleg.loggingstarter.aspect.LogExecutionTime;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -45,7 +45,7 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     @LogExecutionTime
     public LinkInfo getByShortLink(String shortLink) {
         LinkInfo linkInfo = linkInfoRepository
-                .findByShortLinkAndActiveTrueAndEndTimeIsAfter(shortLink, ZonedDateTime.now())
+                .findByShortLinkAndActiveTrueAndEndTimeIsNullOrEndTimeIsAfter(shortLink, LocalDateTime.now())
                 .orElseThrow(() -> new NotFoundPageException(
                         "LinkInfo with shortLink {%s} was not found".formatted(shortLink)));
 
@@ -139,7 +139,7 @@ public class LinkInfoServiceImpl implements LinkInfoService {
     public void deleteInactiveLinks() {
         log.info("Inactive links deleted: " + linkInfoRepository
                 .deleteByActiveFalseAndUpdateTimeIsBefore(
-                        ZonedDateTime.now()
+                        LocalDateTime.now()
                                 .minusMonths(1)));
     }
 }

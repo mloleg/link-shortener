@@ -1,16 +1,16 @@
 package ru.mloleg.linkshortener.dto;
 
-import lombok.*;
+import lombok.Builder;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Builder
 public record FilterLinkInfoRequest(
         UUID id,
         String linkPart,
-        ZonedDateTime endTimeFrom,
-        ZonedDateTime endTimeTo,
+        LocalDateTime endTimeFrom,
+        LocalDateTime endTimeTo,
         String descriptionPart,
         Boolean active,
         PageableRequest pageableRequest) {

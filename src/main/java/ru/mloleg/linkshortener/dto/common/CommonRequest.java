@@ -1,9 +1,15 @@
 package ru.mloleg.linkshortener.dto.common;
 
 import jakarta.validation.Valid;
-import lombok.Builder;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-@Builder
-public record CommonRequest<T>(@Valid T body) {
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public final class CommonRequest<T> {
 
+    @Valid
+    private T body;
 }
